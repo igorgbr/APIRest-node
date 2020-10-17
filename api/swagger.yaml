@@ -1,0 +1,201 @@
+---
+swagger: "2.0"
+info:
+  description: "Essa API provê o acesso aos usuários do sistema."
+  version: "1.0.0"
+  title: "Lista de usuários"
+  contact:
+    name: "Igor Giamoniano Pereira"
+    email: "igorgphotoarte@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "api.meusite.com"
+basePath: "/v1"
+schemes:
+- "https"
+- "http"
+paths:
+  /users:
+    get:
+      tags:
+      - "Users"
+      summary: "Lista de usuários"
+      description: "Este endpoint retorna **todos** os usuários cadastrados no sistema."
+      operationId: "usersGET"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "Lista (array) de usuários"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+        default:
+          description: "Erro Inesperado"
+          schema: {}
+      x-swagger-router-controller: "Users"
+    post:
+      tags:
+      - "Users"
+      summary: "Cria um usuário"
+      description: "Este endpoint vadastra um usuário no sistema."
+      operationId: "usersPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "user"
+        description: "Usuário"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        "201":
+          description: "Usuário cadastrado com sucesso"
+          schema:
+            $ref: "#/definitions/User"
+        default:
+          description: "Erro Inesperado"
+          schema: {}
+      x-swagger-router-controller: "Users"
+    put:
+      tags:
+      - "Users"
+      summary: "Atualiza um usuário"
+      description: "Este endpoint atualiza um usuário no sistema. O ID do usuário\
+        \ deve ser informado"
+      operationId: "usersPUT"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "user"
+        description: "Usuário"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: "Usuário atualizado com sucesso"
+          schema:
+            $ref: "#/definitions/User"
+        "404":
+          description: "usuário não cadastrado. Parametro não informado."
+        default:
+          description: "Erro Inesperado"
+          schema: {}
+      x-swagger-router-controller: "Users"
+    patch:
+      tags:
+      - "Users"
+      summary: "Atualiza um usuário"
+      description: "Este endpoint atualiza um usuário no sistema. O ID do usuário\
+        \ deve ser informado"
+      operationId: "usersPATCH"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "user"
+        description: "Usuário"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: "Usuário atualizado com sucesso"
+          schema:
+            $ref: "#/definitions/User"
+        "404":
+          description: "usuário não cadastrado. Parametro não informado."
+        default:
+          description: "Erro Inesperado"
+          schema: {}
+      x-swagger-router-controller: "Users"
+  /users/{id}:
+    get:
+      tags:
+      - "Users"
+      summary: "Mostra apenas um usuário"
+      description: "Este endpoint retorna **apenas** o usuário a qual foi informado\
+        \ o id."
+      operationId: "usersIdGET"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID do usuário"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "Usuário encontrado"
+          schema:
+            $ref: "#/definitions/User"
+        default:
+          description: "Erro Inesperado"
+          schema: {}
+      x-swagger-router-controller: "Users"
+    delete:
+      tags:
+      - "Users"
+      summary: "Apaga um usuário"
+      description: "Este endpoint **apaga** o usuário a qual foi informado o id."
+      operationId: "usersIdDELETE"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID do usuário"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "Usuário excluido com sucesso!"
+        "404":
+          description: "usuário não cadastrado."
+        "410":
+          description: "usuário não faz mais parte da base."
+        default:
+          description: "Erro Inesperado"
+          schema: {}
+      x-swagger-router-controller: "Users"
+definitions:
+  User:
+    type: "object"
+    required:
+    - "email"
+    - "name"
+    properties:
+      id:
+        type: "integer"
+        description: "Código do usuário"
+      email:
+        type: "string"
+        description: "email do usuário"
+      name:
+        type: "string"
+        description: "Nome do usuário"
+    example:
+      name: "name"
+      id: 0
+      email: "email"
+  Error:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      message:
+        type: "string"
